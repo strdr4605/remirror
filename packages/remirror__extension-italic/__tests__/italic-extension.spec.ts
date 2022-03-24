@@ -76,6 +76,23 @@ describe('inputRules', () => {
       });
   });
 
+  it('should not make text italic within a word', () => {
+    const {
+      add,
+      nodes: { doc, p },
+    } = renderEditor([new ItalicExtension()]);
+
+    add(doc(p('<cursor>')))
+      .insertText('BBC_News')
+      .callback((content) => {
+        expect(content.doc).toEqualRemirrorDocument(doc(p('BBC_News')));
+      })
+      .insertText('_Labs')
+      .callback((content) => {
+        expect(content.doc).toEqualRemirrorDocument(doc(p('BBC_News_Labs')));
+      });
+  });
+
   it('supports nested input rule matches', () => {
     const {
       add,
